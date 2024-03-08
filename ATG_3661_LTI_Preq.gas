@@ -1,0 +1,84 @@
+Program.Sub.ScreenSU.Start
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Program.Sub.Definition.DefaultArgs("Verify","")
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+Function.ODBC.Connection!con.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+F.Intrinsic.Control.CallSub(Verify)
+
+
+Program.Sub.Main.End
+
+Program.Sub.Verify.Start
+V.Local.sPart.Declare(String)
+V.Local.sSQL.Declare(String)
+
+F.Intrinsic.Control.If(V.Caller.Hook,=,16200)
+	F.Intrinsic.String.Concat(V.Passed.000013,V.Passed.000014,V.Local.sPart)
+	F.Intrinsic.String.Concat("Select Part from Inventory_Mstr where Part='",V.Local.sPart,"'",V.Local.sSQL)
+	F.ODBC.Connection!con.OpenRecordsetRO("rstPart",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.con!rstPart.EOF,=,True)
+		V.Passed.000036.Set("1301")
+		'F.Intrinsic.Debug.Stop
+		'f.Intrinsic.API.setcontrolfocus(V.Passed.000020.HWnd)
+	F.Intrinsic.Control.Else
+		V.Passed.000036.Set("1205")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,16220)
+	F.Intrinsic.String.Concat(V.Passed.000013,V.Passed.000014,V.Local.sPart)
+	F.Intrinsic.String.Concat("Select Part from Inventory_Mstr where Part='",V.Local.sPart,"'",V.Local.sSQL)
+	F.ODBC.Connection!con.OpenRecordsetRO("rstPart",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.con!rstPart.EOF,=,True)
+		V.Passed.000036.Set("1301")
+		'F.Intrinsic.Debug.Stop
+		'f.Intrinsic.API.setcontrolfocus(V.Passed.000020.HWnd)
+	F.Intrinsic.Control.Else
+		V.Passed.000036.Set("1205")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Elseif(V.Caller.Hook,=,16210)
+	F.Intrinsic.Control.if(V.Passed.000020,<>,"")
+		V.Passed.000036.Set("1301")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Concat(V.Passed.000013,V.Passed.000014,V.Local.sPart)
+	F.Intrinsic.String.Concat("Select Part from Inventory_Mstr where Part='",V.Local.sPart,"'",V.Local.sSQL)
+	F.ODBC.Connection!con.OpenRecordsetRO("rstPart",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.con!rstPart.EOF,=,True)
+		V.Passed.000036.Set("1301")
+		'F.Intrinsic.Debug.Stop
+		'f.Intrinsic.API.setcontrolfocus(V.Passed.000020.HWnd)
+	F.Intrinsic.Control.Else
+		V.Passed.000036.Set("1205")
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.if(V.Passed.000020,<>,"")
+		V.Passed.000036.Set("1301")
+	F.Intrinsic.Control.Elseif(V.Passed.000020,=,"")
+		F.Intrinsic.Control.AndIf(V.Passed.000036,=,"1301")
+		V.Passed.777777.Set("1")
+		F.Intrinsic.UI.Msgbox("Please Enter a Work Order")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Endif
+
+
+'F.ODBC.con!rstPart.Close
+
+
+	
+Program.Sub.Verify.End
+
+Program.Sub.Comments.Start
+${$0$}$ATG_3661_LTI_Preq$}$RLK$}$4/1/2016
+${$1$}$$}$$}$3$}$16230$}$PUS011-PRE-SAVE-HOOK$}$4/1/2016 9:56:49 AM$}$(Program: PUR011GI; Screen: PUS011)
+
+${$1$}$$}$$}$2$}$16220$}$PUS011-GL-ACCT-CHG-HOOK$}$4/1/2016 9:56:27 AM$}$(Program: PUR011GI; Screen: PUS011)
+
+${$1$}$$}$$}$1$}$16210$}$PUS011-WO-CHG-HOOK$}$4/1/2016 9:55:56 AM$}$(Program: PUR011GI; Screen: PUS011)
+
+${$1$}$$}$$}$0$}$16200$}$PUS011-PART-CHG-HOOK$}$4/1/2016 9:55:18 AM$}$(Program: PUR011GI; Screen: PUS011)
+
+Program.Sub.Comments.End
+
